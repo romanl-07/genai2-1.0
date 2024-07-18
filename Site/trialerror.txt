@@ -1,0 +1,175 @@
+# Load hashed passwords from a file
+file_path = Path(__file__).parent / "hashed_pw.pkl"
+
+
+
+try:
+    with file_path.open('rb') as file:
+        hashed_passwords = pickle.load(file)
+except FileNotFoundError:
+    st.error(f"Error: File '{file_path}' not found.")
+except EOFError:
+    st.error(f"Error: End of file reached while reading '{file_path}'.")
+
+# Assuming stauth.Authenticate is properly defined in stauth module
+# Instantiate the Authenticator
+authenticator = stauth.Authenticate("sales_dashboard", hashed_passwords, "abcdef", cookie_expiry_days=30)
+
+# Login logic
+name, authentication_status, user = authenticator.login("Login", "Main")
+
+if authentication_status == False:
+    st.error("Username/password is incorrect")
+elif authentication_status is None:
+    st.warning("Please enter username and password")
+elif authentication_status:
+    # Authentication successful, proceed with your application logic
+    st.success("Login successful")
+    # Here you can place the code that should run after successful login
+
+class stauth:
+    class Authenticate:
+        def __init__(self, app_name, users, key, cookie_expiry_days):
+            self.app_name = app_name
+            self.users = users
+            self.key = key
+            self.cookie_expiry_days = cookie_expiry_days
+
+        def login(self, title, subtitle):
+            # Mock login logic
+            username = st.text_input("Username")
+            password = st.text_input("Password", type="password")
+            if st.button("Login"):
+                if username in self.users and hashlib.sha256(password.encode()).hexdigest() == self.users[username]:
+                    return username, True, username
+                else:
+                    return username, False, None
+            return None, None, None
+
+# Example usage of the Authenticator class
+class Authenticator:
+    def __init__(self, users):
+        self.users = users
+
+    def authenticate(self, username, password):
+        if username in self.users:
+            stored_password = self.users[username]
+            hashed_password = hashlib.sha256(password.encode()).hexdigest()
+            if hashed_password == stored_password:
+                return True
+        return False
+
+# Run the authenticator with example user data
+example_users = {
+    "user1": hashlib.sha256("password1".encode()).hexdigest(),
+    "user2": hashlib.sha256("password2".encode()).hexdigest(),
+}
+
+example_authenticator = Authenticator(example_users)
+
+if authentication_status == False:
+    st.error("Username/password is incorrect")
+elif authentication_status is None:
+    st.warning("Please enter username and password")
+elif authentication_status:
+    # Authentication successful, proceed with your application logic
+    st.success("Login successful")
+    # Here you can place the code that should run after successful login
+
+
+
+import hashlib
+import pickle
+from pathlib import Path
+import streamlit as st
+import hmac
+
+
+def check_password():
+    def password_entered():
+        if hmac.compare_digest(st.session_state["password"], st.secrets["password"]):
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # Don't store the password.
+        else:
+            st.session_state["password_correct"] = False
+
+    if "password_correct" not in st.session_state:
+        st.text_input(
+            "Password", type="password", on_change=password_entered, key="password"
+        )
+        return False
+    elif not st.session_state["password_correct"]:
+        st.text_input(
+            "Password", type="password", on_change=password_entered, key="password"
+        )
+        st.error("😕 Password incorrect")
+        return False
+    else:
+        return True
+
+if check_password():
+    st.write("Here goes your normal Streamlit app...")
+    st.button("Click me")
+
+
+# Mock stauth module for demonstration purposes
+class stauth:
+    class Authenticate:
+        def __init__(self, app_name, users, key, cookie_expiry_days):
+            self.app_name = app_name
+            self.users = users
+            self.key = key
+            self.cookie_expiry_days = cookie_expiry_days
+
+        def login(self, title, subtitle):
+            # Mock login logic
+            username = st.text_input("Username")
+            password = st.text_input("Password", type="password")
+            if st.button("Login"):
+                if username in self.users and hashlib.sha256(password.encode()).hexdigest() == self.users[username]:
+                    return username, True, username
+                else:
+                    return username, False, None
+            return None, None, None
+
+def load_hashed_passwords():
+    file_path = Path(__file__).parent / "hashed_pw.pkl"
+    try:
+        with file_path.open('rb') as file:
+            return pickle.load(file)
+    except FileNotFoundError:
+        st.error(f"Error: File '{file_path}' not found.")
+    except EOFError:
+        st.error(f"Error: End of file reached while reading '{file_path}'.")
+    except Exception as e:
+        st.error(f"An error occurred while loading hashed passwords: {str(e)}")
+    return {}
+
+def main():
+    st.title("Dashboard Login")
+
+    # Load hashed passwords
+    hashed_passwords = load_hashed_passwords()
+
+    # Check if hashed_passwords were loaded successfully
+    if not hashed_passwords:
+        st.error("No hashed passwords loaded. Ensure the file is correct and not empty.")
+        return
+
+    # Instantiate the Authenticator
+    authenticator = stauth.Authenticate("sales_dashboard", hashed_passwords, "abcdef", cookie_expiry_days=30)
+
+    # Login logic
+    name, authentication_status, user = authenticator.login("Login", "Main")
+
+    if authentication_status == False:
+        st.error("Username/password is incorrect")
+    elif authentication_status is None:
+        st.warning("Please enter username and password")
+    elif authentication_status:
+        # Authentication successful, proceed with your application logic
+        st.success(f"Welcome {name}! Login successful.")
+        # Here you can place the code that should run after successful login
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,14 @@
+credentials:
+  usernames:
+    jsmith:
+      email: jsmith@example.com
+      name: John Smith
+      password: abc123 # This should be hashed
+    rbriggs:
+      email: rbriggs@example.com  
+      name: Rebecca Briggs
+      password: def456 # This should be hashed
+cookie:
+  expiry_days: 30
+  key: some_signature_key
+  name: some_cookie_name
