@@ -166,8 +166,8 @@ def database():
     with tab5:
         st.header("F")
 
-        data1= pd.DataFrame(conn.read(spreadsheet=url,worksheet="1251738910",ttl=5,), range(20))
-        data2 = conn.read(spreadsheet=url,worksheet="1395020218",ttl=5,)
+        data1= pd.DataFrame(conn.read(spreadsheet=url,worksheet="813261814",ttl=5,), range(20))
+        data2 = conn.read(spreadsheet=url,worksheet="611531233",ttl=5,)
         st.dataframe(data2,column_config={},hide_index=True)
         st.line_chart(data1)
 
@@ -183,7 +183,3 @@ page_names_to_funcs = {
 
 selected_page = st.sidebar.selectbox("Select a page", page_names_to_funcs.keys())
 page_names_to_funcs[selected_page]()
-
-
-
-
