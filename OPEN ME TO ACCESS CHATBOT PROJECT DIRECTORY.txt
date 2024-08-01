@@ -1,0 +1,16 @@
+Hello! Start here to open your Educational Chatbot Project
+
+1) Open Visual Studio Code (VSCode)
+2) If you don't see chatbot_project in the top right corner then
+3) Open VSCode
+4) Click File >> Open Folder >> ed_chat_bot (user) >> chatbot_project >> Open
+
+
+You should now see the chatbot_project directory in VS code. This includes:
+	- venv
+	- .env
+	- example.py
+	- README.md
+
+Please open the README.md file form more information on the project. 
+
