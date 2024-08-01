@@ -1,6 +1,6 @@
 # Chatbot Project with Generative AI
 
-This is the README file for the Educational Chatbot Project with Generative AI (Sponsored by Infosys).
+This is the README file for the Educational Chatbot Project with Generative AI (Project by Infosys).
 
 ## Project Information
 
