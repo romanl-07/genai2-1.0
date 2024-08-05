@@ -82,18 +82,19 @@ with st.sidebar:
 
 #----------------CHATBOT----------------
 def ChatUI():
-    env_path = r"/Users/ed_chat_bot/chatbot_project/.env"
+    env_path = r"/Users/ed_chat_bot/chatbot_project/.env" #environment path
 
-    load_dotenv(env_path)
+    load_dotenv(env_path)            #loading from the dot env file
     API_KEY = os.getenv('API_KEY')
     print (API_KEY)
 
-    genai.configure(api_key=API_KEY)
+    genai.configure(api_key=API_KEY)             #configuring and accessing the API key to run the chatbot
     model = genai.GenerativeModel('gemini-pro')
+    #Where you write down the prompt
     def generate_content(prompt):
             response = model.generate_content(prompt)
             return response.text
-
+#generating for the AI to write
     prompt = st.text_input('Enter a prompt:')
     if st.button('Generate'):
             response = generate_content(prompt)
@@ -137,12 +138,6 @@ def database():
         data2 = conn.read(spreadsheet=url,worksheet="0",ttl=5,)
         st.dataframe(data2,column_config={},hide_index=True)
         st.line_chart(data1)
-
-
-
-     
-       
-       
     
     with tab3:
         st.header("B-")
@@ -151,8 +146,6 @@ def database():
         data2 = conn.read(spreadsheet=url,worksheet="525292218",ttl=5,)
         st.dataframe(data2,column_config={},hide_index=True)
         st.line_chart(data1)
-       
-       
     
     with tab4:
         st.header("B+")
@@ -161,7 +154,6 @@ def database():
         data2 = conn.read(spreadsheet=url,worksheet="1395020218",ttl=5,)
         st.dataframe(data2,column_config={},hide_index=True)
         st.line_chart(data1)
-    
     
     with tab5:
         st.header("F")
